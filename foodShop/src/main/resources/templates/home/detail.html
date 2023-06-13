@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+	crossorigin="anonymous">
+
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+	<header>
+		<div class="container">
+			<div class="row">
+				<nav class="navbar navbar-expand-lg">
+					<div class="container-fluid header_top">
+						<a class="navbar-brand" th:href="@{/home}"> <i
+							class="fa-solid fa-carrot" style="font-size: 35px; color: green;"></i>
+						</a>
+
+						<button class="navbar-toggler" type="button"
+							data-bs-toggle="collapse" data-bs-target="#navbarNav"
+							aria-controls="navbarNav" aria-expanded="false"
+							aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse justify-content-end"
+							id="navbarNav">
+							<ul class="navbar-nav">
+								<li class="nav-item me-2"><a class="nav-link menu-detail"
+									aria-current="page" th:href="@{/log-in}">Đăng nhập</a></li>
+								<li class="nav-item me-2"><a class="nav-link menu-detail"
+									href="#dangKy">Đăng ký</a></li>
+								<li class="nav-item me-2"><a class="nav-link menu-detail"
+									href="#doiMatKhau">Đổi mật khẩu</a></li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</header>
+
+	<div class="main">
+
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-1"></div>
+					<div class="col-11">
+						<nav class="navbar navbar-expand-lg bg-body-tertiary rounded-3">
+							<div class="container-fluid">
+								<button class="navbar-toggler" type="button"
+									data-bs-toggle="collapse"
+									data-bs-target="#navbarSupportedContent"
+									aria-controls="navbarSupportedContent" aria-expanded="false"
+									aria-label="Toggle navigation">
+									<span class="navbar-toggler-icon"></span>
+								</button>
+								<div class="collapse navbar-collapse"
+									id="navbarSupportedContent">
+									<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+										<li class="nav-item"><a class="nav-link active"
+											aria-current="page" th:href="@{/home}">Trang chủ</a></li>
+										<li class="nav-item"><a class="nav-link" href="#">Sản
+												phẩm</a></li>
+										<li class="nav-item"><a class="nav-link" href="#">Đã
+												mua</a></li>
+									</ul>
+									<form class="d-flex" role="search">
+										<input class="form-control me-2" type="search"
+											placeholder="Search" aria-label="Search">
+										<button class="btn btn-outline-success" type="submit">Search</button>
+									</form>
+									<ul class="navbar-nav me-2">
+										<li class="nav-item"><a class="nav-link active"
+											aria-current="page" th:href="@{/gio-hang}"> <i
+												class="fa-solid fa-cart-shopping"
+												style="font-size: 24px; color: darkslategray;"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</nav>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="container">
+				<div class="row">
+					<div class="col-2 mt-3">
+						<div class="card border border-0" style="width: 100%">
+							<div class="card-body">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item"><a class="nav-link"
+										th:href="@{/home}">Tất cả</a></li>
+									<li class="list-group-item" th:each="c : ${categoryList}">
+										<a class="nav-link" th:href="@{/home/product?id=} + ${c.id}"
+										th:text="${c.title}"></a>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-10 mt-3">
+						<div class="mb-3"
+							style="max-width: 80%">
+							<form th:action="@{/cart/update/} + ${productDetail.id}" method="post" class="row g-0">
+								<div class="col-md-4">
+									<img th:src="'/uploads/' + ${productDetail.image}"
+										class="img-fluid rounded-start rounded-4" alt="..." />
+								</div>
+								<div class="col-md-8">
+									<div class="card-body">
+										<h5 class="card-title" th:text="${productDetail.nameProduct}"></h5>
+										<h5 th:text="'Số lượng còn: ' + ${productDetail.quantity}" class="card-text mt-3"></h5>
+
+										<h5 class="card-text mt-3 text-danger mb-2 fw-bold" 
+										th:text="'$' + ${productDetail.price}"></h5>
+
+										<div class="row mx-auto mt-4">
+											<div class="col-3">
+												<div class="input-group mb-3" style="height: 30px">
+													<input type="number" name="qty" th:value="1" 
+													class="form-control"
+														aria-label="Amount (to the nearest dollar)"
+														style="height: 30px; width: 40px"/>
+												</div>
+											</div>
+										</div>
+
+										<div class="d-grid gap-2 col-6 mx-auto">
+										<button class="btn btn-warning" th:formaction="@{/gio-hang/add/} + ${productDetail.id}">
+										<i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ hàng
+										</button>
+											
+										</div>
+									</div>
+								</div>
+								</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+	<footer class="text-bg-success mt-5">
+		<div class="container mt-3">
+			<div class="row">
+				<div class="col-2 mt-5">
+					<h4>About Us</h4>
+				</div>
+				<div class="col-3 mt-5">
+					<h4>Customer Core</h4>
+				</div>
+				<div class="col-3 mt-5">
+					<h4>Contact Us</h4>
+				</div>
+				<div class="col-4 mt-5">
+					<h4>Subscribe</h4>
+				</div>
+			</div>
+
+			<div class="row mt-2">
+				<div class="col-2">
+					<p class="mb-1">item 1</p>
+					<p class="mb-1">item 2</p>
+					<p class="mb-1">item 3</p>
+					<p class="mb-1">item 4</p>
+				</div>
+				<div class="col-3">
+					<p class="mb-1">item 1</p>
+					<p class="mb-1">item 2</p>
+					<p class="mb-1">item 3</p>
+					<p class="mb-1">item 4</p>
+				</div>
+				<div class="col-3">
+					<p class="mb-1">item 1</p>
+					<p class="mb-1">item 2</p>
+					<p class="mb-1">item 3</p>
+					<p class="mb-1">item 4</p>
+				</div>
+				<div class="col-4">
+					<form class="d-flex" role="SUBSCRIBE">
+						<input class="form-control me-2" type="SUBSCRIBE"
+							placeholder="Enter your email" aria-label="SUBSCRIBE" />
+						<button class="btn btn-success" type="submit">SUBSCRIBE</button>
+					</form>
+					<div class="row">
+						<div class="col mt-2">
+							<i class="fa-brands fa-cc-visa me-2 ficon"></i> <i
+								class="fa-brands fa-cc-mastercard me-2 ficon"></i> <i
+								class="fa-brands fa-simplybuilt me-2 ficon"></i> <i
+								class="fa-brands fa-sellcast me-2 ficon"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-5 text-center">
+				<div class="col">
+					<i class="fa-brands fa-facebook me-2 ficon"></i> <i
+						class="fa-brands fa-twitter me-2 ficon"></i> <i
+						class="fa-brands fa-instagram me-2 ficon"></i> <i
+						class="fa-brands fa-github me-2 ficon"></i>
+				</div>
+			</div>
+			<div class="row text-center mt-2">
+				<div class="col mb-3">
+					<p>@SONNSPH26215-PTPM-FPT Polytechnic</p>
+				</div>
+			</div>
+		</div>
+
+	</footer>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+		integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+		crossorigin="anonymous"></script>
+</body>
+</html>
